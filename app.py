@@ -33,9 +33,23 @@ if st.button("Generate SOAP Note"):
             # st.spinner() shows a little loading animation while the code inside runs —
             # useful feedback since the AI call takes a few seconds.
 
-            prompt = f"""You are a medical scribe assistant. Convert the following doctor-patient 
-            conversation into a SOAP note. Respond with ONLY a JSON object with exactly these 
-            four keys: "subjective", "objective", "assessment", "plan". No extra text, no markdown.
+            prompt = f"""You are a clinical documentation assistant. Your ONLY job is to convert 
+            the conversation below into a structured SOAP note based EXACTLY on what was said.
+
+            CRITICAL RULES:
+            - Do NOT add any medical information, diagnoses, or recommendations that were not 
+              explicitly stated in the conversation.
+            - If a SOAP section has no relevant information in the conversation, write 
+              "Not discussed" for that section rather than guessing or inventing content.
+            - Preserve clinical accuracy — do not soften, exaggerate, or reinterpret what was said.
+            - Ignore filler words, false starts, or repeated phrases — write in clean clinical 
+              language, but do not change the actual meaning or add information.
+            - Use standard medical abbreviations where appropriate (e.g., "URI" for upper 
+              respiratory infection) but only if it doesn't reduce clarity.
+
+            Respond with ONLY a JSON object with exactly these four keys: 
+            "subjective", "objective", "assessment", "plan". No extra text, no markdown, 
+            no commentary outside the JSON.
 
             Conversation:
             {conversation}
